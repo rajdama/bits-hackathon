@@ -21,5 +21,5 @@ const userRoutes = require('./routes/user')
 app.use('/api',userRoutes)
 
 app.listen(1000, () => {
-    console.log('Server is running on port 3000')
+    console.log('Server is running on port 1000')
 })
