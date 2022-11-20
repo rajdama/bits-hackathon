@@ -20,6 +20,6 @@ mongoose.connect(`mongodb+srv://root:${process.env.MONGO_DB_PASSWORD}@cluster0.u
 const userRoutes = require('./routes/user')
 app.use('/api',userRoutes)
 
-app.listen(1000, () => {
+app.listen(process.env.PORT, () => {
     console.log('Server is running on port 1000')
 })

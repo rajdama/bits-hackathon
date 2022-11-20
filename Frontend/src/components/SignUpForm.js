@@ -69,11 +69,12 @@ function SignUpForm() {
   if (auth.authenticate) {
     return <Navigate to={"/home"} />;
   }
+  console.log(user)
 
   if (user.loading){
     return <p>Loading..</p>
   }
-
+else{
   return (
     <div className="appAside">
       <div className="quotes">
@@ -230,6 +231,8 @@ function SignUpForm() {
       </div>
     </div>
   );
+}
+
 }
 
 export default SignUpForm;
