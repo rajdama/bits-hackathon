@@ -3,8 +3,6 @@ import axios from "../helpers/axios";
 
 export const signup = (user) => {
 
-    console.log(user)
-
     return async (dispatch) => {
 
         dispatch({ type: user_constants.USER_REGISTER_REQUEST });
@@ -25,6 +23,29 @@ export const signup = (user) => {
                     payload: { error: res.data.error }
                 });
             }
+        }
+    }
+}
+
+export const foodList = (target) => {
+    
+    return async dispatch => {
+        dispatch({
+            type: user_constants.FOOD_LIST_REQUEST
+        })
+        const res = await axios.get(`/${target}`);
+        if(res.status === 200){
+            const  foodlist  = res.data;
+            console.log(foodlist)
+            dispatch({
+                type: user_constants.FOOD_LIST_SUCCESS,
+                payload: {message:foodlist}
+            });
+        }else{
+            dispatch({
+                type: user_constants.FOOD_LIST_FAILURE,
+                payload: { error: res.data.error }
+            });
         }
     }
 }

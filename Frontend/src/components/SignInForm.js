@@ -69,7 +69,7 @@ function SignInForm() {
   console.log(localStorage)
   if(auth.authenticate){
     console.log(auth.authenticate)
-    return <Navigate to={"/home"} />
+    return <Navigate to={"/welcome"} />;
   }
 
   return (

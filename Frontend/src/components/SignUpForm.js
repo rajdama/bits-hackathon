@@ -67,12 +67,12 @@ function SignUpForm() {
   }, []);
 
   if (auth.authenticate) {
-    return <Navigate to={"/home"} />;
+    return <Navigate to={"/chart"} />;
   }
   console.log(user)
 
   if (user.loading){
-    return <p>Loading..</p>
+    return <p style={{color:"black"}}>Loading..</p>
   }
 else{
   return (

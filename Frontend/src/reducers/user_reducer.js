@@ -28,6 +28,26 @@ export default (state = initState, action) => {
                 error: action.payload.error
             }
             break;
+        case user_constants.FOOD_LIST_REQUEST:
+            state = {
+                ...state,
+                loading: true
+            }
+            break;
+        case user_constants.FOOD_LIST_SUCCESS:
+            state = {
+                ...state,
+                loading: false,
+                message: action.payload.message
+            }
+            break;
+        case user_constants.FOOD_LIST_FAILURE:
+            state = {
+                ...state,
+                loading: false,
+                error: action.payload.error
+            }
+            break;
     }
 
     return state;

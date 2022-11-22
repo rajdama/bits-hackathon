@@ -1,0 +1,42 @@
+.MuiPickersToolbar-root,.MuiDatePickerToolbar-root,.css-1eurbeq-MuiPickersToolbar-root-MuiDatePickerToolbar-root{
+    display:none !important;
+  }
+  /* .MuiButtonBase-root,.MuiPickersDay-root,.Mui-selected,.MuiPickersDay-dayWithMargin,.css-bkrceb-MuiButtonBase-root-MuiPickersDay-root{
+    background-color: lightgrey;
+  } */
+  .Mui-selected{
+    background-color: lightcoral !important;
+  }
+  .MuiDialogActions-root,.MuiDialogActions-spacing,.css-hlj6pa-MuiDialogActions-root{
+    display: none !important;
+  }
+  .meal-chart{
+    display:flex !important;
+    flex-direction: row !important;
+    justify-content: space-around !important;
+    font-weight:bold !important;
+    color:black !important;
+    font-size:20px;
+  }
+  button:hover{
+    cursor:pointer;
+  }
+  .MuiPickerStaticWrapper-root ,.css-u0soqy-MuiPickerStaticWrapper-root{
+    display:flex;
+    flex-direction:column;
+    width:100vw;
+  }
+  .MuiCalendarOrClockPicker-root, .css-j3g793-MuiCalendarOrClockPicker-root{
+    width:100vw;
+  }
+  .MuiCalendarOrClockPicker-root, .css-j3g793-MuiCalendarOrClockPicker-root{
+    margin-top: 10vh;
+    color:black;
+  }
+  h1{
+    color:black !important;
+  }
+  .MuiSvgIcon-root, .MuiSvgIcon-colorRed, .MuiSvgIcon-fontSizeMedium, .css-i4bv87-MuiSvgIcon-root{
+    color:green;
+    font-size:20px;
+  }
