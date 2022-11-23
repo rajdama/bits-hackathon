@@ -1,9 +1,11 @@
 import "./Chart.css";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import "bootstrap/dist/css/bootstrap.css";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import {occupiedCells} from "../actions/user_actions"
+import {makeChart} from "../actions/user_actions"
 
 let imjusttakingexample = [
   {
@@ -18,8 +20,8 @@ export default function Chart() {
 
   const [elements, setelements] = useState([]);
   const [selectedCell, setSelectedCell] = useState("");
-
-  let occupiedCells = []
+  const [selectedFood, setSelectedFood] = useState({});
+  const dispatch = useDispatch();
 
 
   const openSearch = () => {
@@ -30,22 +32,54 @@ export default function Chart() {
     window.location.reload();
   };
   const user = useSelector((state) => state.user);
+  console.log(user.occupiedCells);
   const foodList = user.message;
   console.log(foodList);
   const generatetable = () => {
     let ele = [];
     for (let i = 0; i < 4; i++) {
       for (let j = 0; j < 7; j++) {
-        if(occupiedCells.includes(`${i}${j}`)){
+        let occupiedCellsInfo = []
+       occupiedCellsInfo = user.occupiedCells.length!=0 ? user.occupiedCells.filter((item) => {return item.cell == `${i}${j}`}) : occupiedCellsInfo
+       if(occupiedCellsInfo.length != 0){
+          // occupiedCellsInfo = [occupiedCellsInfo[occupiedCellsInfo.length-1]]
+          console.log(occupiedCellsInfo)
+
           let image = React.createElement(
             "img",
             {
-              src: "https://png.pngtree.com/png-vector/20190130/ourmid/pngtree-hand-drawn-cute-cartoon-burger-with-food-elements-elementlovely-foodcartoon-foodhand-png-image_613521.jpg",
+              src: `${occupiedCellsInfo[0].food.image}`,
               style: {
                 width:"90px",
                 height:"90px",
+                marginTop:"5px",
+                borderRadius:"50%",
+                margin:"auto"
               }
             }
+          )
+
+          let calorie = React.createElement(
+            "p",
+            {
+            style: {
+              fontSize: "12px",
+            }
+            },
+            `calories: ${occupiedCellsInfo[0].food.calories}`
+          )
+
+          let title = React.createElement(
+            "p",
+            {
+              style: {
+                fontSize: "12px",
+                display: "flex",
+                flexDirection: "column",
+              }
+            },
+            occupiedCellsInfo[0].food.title,
+            calorie
           )
   
           let cell = React.createElement(
@@ -58,13 +92,13 @@ export default function Chart() {
                 height: "auto",
                 border: "solid 1px",
                 display: "flex",
-                flexDirection: "row",
+                flexDirection: "column",
                 alignItem: "center",
                 justifyContent: "center",
               },
             },
             image,
-            "burger"
+            title
             
           );
           ele.push(cell);
@@ -136,10 +170,8 @@ export default function Chart() {
                   return (
                     <Dropdown.Item
                       onClick={() => {
-                        occupiedCells.push(selectedCell);
-                        console.log(occupiedCells);
-                        console.log(selectedCell);
-                        console.log(food);
+                        dispatch(occupiedCells({cell:selectedCell,food:food}));
+                        setSelectedFood(food)
                       }}
                       style={{ color: "black" }}
                     >
@@ -149,13 +181,16 @@ export default function Chart() {
                 }):""}
             </DropdownButton>
           </form>
+          {
+            selectedFood.title &&
           <div className="searchresult">
-            <img src={imjusttakingexample[0].image} alt="img"></img>
+            <img src={selectedFood.image} alt="img"></img>
             <div className="detailsfood">
-              <p>{imjusttakingexample[0].name}</p>
-              <p>carlories : {imjusttakingexample[0].carlories}</p>
+              <p>{selectedFood.title}</p>
+              <p>carlories : {selectedFood.calories}</p>
             </div>
           </div>
+          }
         </div>
       </div>
       <div className="Header">Make your own chart</div>
@@ -169,7 +204,7 @@ export default function Chart() {
         <p>Sunday</p>
       </div>
       <div className="container">{elements}</div>
-      <button className="start">Start</button>
+      <button onClick={()=>{dispatch(makeChart(user.occupiedCells))}} className="start">Start</button>
     </div>
   );
 }

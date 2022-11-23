@@ -1,9 +1,11 @@
 import { user_constants } from "../actions/constants"
+import { occupiedCells } from "../actions/user_actions";
 
 const initState = {
     error: null,
     message: '',
-    loading: false
+    loading: false,
+    occupiedCells: []
 }
 
 export default (state = initState, action) => {
@@ -46,6 +48,34 @@ export default (state = initState, action) => {
                 ...state,
                 loading: false,
                 error: action.payload.error
+            }
+            break;
+         case user_constants.MAKE_CHART_REQUEST:
+            state = {
+                ...state,
+                loading: true
+            }
+            break;
+        case user_constants.MAKE_CHART_SUCCESS:
+            state = {
+                ...state,
+                loading: false,
+                message: action.payload.message
+            }
+            break;
+        case user_constants.MAKE_CHART_FAILURE:
+            state = {
+                ...state,
+                loading: false,
+                error: action.payload.error
+            }
+            break;
+        case "OCCUPIED_CELLS":
+            console.log(action.payload.occupiedCells.food)
+            state.occupiedCells = state.occupiedCells.length!=0 ? state.occupiedCells.filter((item) => item.cell !== action.payload.occupiedCells.cell) : state.occupiedCells
+            state = {
+                   ...state,
+                    occupiedCells:[...state.occupiedCells, {cell:action.payload.occupiedCells.cell, food:action.payload.occupiedCells.food}]
             }
             break;
     }
