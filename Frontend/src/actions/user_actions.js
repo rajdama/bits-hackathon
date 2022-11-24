@@ -29,7 +29,7 @@ export const signup = (user) => {
 }
 
 export const foodList = (target) => {
-    
+    console.log(11111111)
     return async dispatch => {
         dispatch({
             type: user_constants.FOOD_LIST_REQUEST
@@ -108,5 +108,14 @@ export const getChart = (userId) => {
                 payload: { error: res.data.error }
             });
         }
+    }
+}
+
+export const reload = (reload) => {
+    return async dispatch => {
+        dispatch({
+            type: "RELOAD",
+            payload: {reload}
+        })
     }
 }

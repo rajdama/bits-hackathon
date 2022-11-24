@@ -71,10 +71,6 @@ function SignUpForm() {
   }
   console.log(user)
 
-  if (user.loading){
-    return <p style={{color:"black"}}>Loading..</p>
-  }
-else{
   return (
     <div className="appAside">
       <div className="quotes">
@@ -133,7 +129,7 @@ else{
                 type="text"
                 id="firstName"
                 className="formFieldInput"
-                placeholder="Enter your sirst name"
+                placeholder="Enter your first name"
                 name="firstName"
                 onInput={(e) => {
                   setfirstname(e.target.value);
@@ -163,7 +159,7 @@ else{
                 type="text"
                 id="userName"
                 className="formFieldInput"
-                placeholder="Enter your last name"
+                placeholder="Enter your user name"
                 name="userName"
                 onInput={(e) => {
                   setusername(e.target.value);
@@ -231,8 +227,6 @@ else{
       </div>
     </div>
   );
-}
-
 }
 
 export default SignUpForm;

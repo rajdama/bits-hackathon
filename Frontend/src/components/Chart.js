@@ -4,9 +4,10 @@ import { useSelector,useDispatch } from "react-redux";
 import "bootstrap/dist/css/bootstrap.css";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import {occupiedCells} from "../actions/user_actions"
+import {foodList, occupiedCells} from "../actions/user_actions"
 import {makeChart} from "../actions/user_actions"
 import {getChart} from "../actions/user_actions"
+import { Navigate } from 'react-router-dom'
 
 export default function Chart() {
 
@@ -26,23 +27,32 @@ export default function Chart() {
   const auth = useSelector((state) => state.auth);
   useEffect(() => {
     dispatch(getChart(auth.user._id));
+    // dispatch(foodList("gain"));
+
   }, [])
   let chart = []
-  let foodList
-  if(user.message){
-    if(false){
-      user.message.map((item) => {
+  let foodlist
+  if (user.message) {
+    foodlist = user.message;
+  }
+  if(user.chart){
+    if(user.chart.length !=0){
+      user.chart.map((item) => {
         return (item.diet.map((diet)=>{
                chart.push(diet)
          }))
-       })
-       foodList = user.message;
+        })
     }
     }
 
-  if(!user.message){
-    window.location.reload()
+  useEffect(() => {
+  if(user.reload){
+    // window.location.reload()
   }
+  }, [])
+  
+
+  
   
   // if(user.message.length !=0){
   //   user.message.map((item) => {
@@ -231,12 +241,18 @@ export default function Chart() {
     setelements(ele);
   }
   useEffect(() => {
-    if(user.message.length == 0){
-      generatetable();
-    }else{
-      generateFoodList();
-    }
+    if(user.chart.length ==0){
+        generatetable();
+      }
+      else{
+        generateFoodList();
+      }
   }, []);
+
+  if(user.chart.length ==0 && user.message.length ==0){
+    return <Navigate to={"/goal"} />
+  }
+
   return (
     <div>
       <div id="myOverlay" className="overlay">
@@ -250,8 +266,8 @@ export default function Chart() {
               id="dropdown-basic-button"
               title="Select Food"
             >
-              {foodList ?
-                foodList.map((food) => {
+              {foodlist ?
+                foodlist.map((food) => {
                   return (
                     <Dropdown.Item
                       onClick={() => {

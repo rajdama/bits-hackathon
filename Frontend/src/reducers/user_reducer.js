@@ -5,6 +5,8 @@ const initState = {
     error: null,
     message: '',
     loading: false,
+    chart:[],
+    reload:true,
     occupiedCells: []
 }
 
@@ -80,7 +82,7 @@ export default (state = initState, action) => {
             state = {
                 ...state,
                 loading: false,
-                message: action.payload.message
+                chart: action.payload.message
             }
             break;
         case user_constants.GET_CHART_FAILURE:
@@ -88,6 +90,12 @@ export default (state = initState, action) => {
                 ...state,
                 loading: false,
                 error: action.payload.error
+            }
+            break;
+        case "RELOAD":
+            state = {
+                ...state,
+                reload: action.payload
             }
             break;
         case "OCCUPIED_CELLS":

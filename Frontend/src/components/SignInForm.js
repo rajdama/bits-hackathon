@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { isUserLoggedIn, login } from "../actions";
+import { getChart, isUserLoggedIn, login } from "../actions";
 import { useDispatch, useSelector } from 'react-redux'
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import { Navigate } from 'react-router-dom'
+
 function SignInForm() {
   // declaring useState variable
   const [email, setemail] = useState("");
@@ -13,6 +14,12 @@ function SignInForm() {
   const [quotes, setquotes] = useState({});
   const dispatch = useDispatch()
   const auth = useSelector(state => state.auth)
+  const user = useSelector(state => state.user)
+  useEffect(() => {
+    dispatch(getChart(auth.user._id))
+  }, [])
+  
+  console.log(user)
   //   used to route through pages we create an instance of useNavigate which can be used called by passing the page route into the instance as a parameter
   const navigate = useNavigate();
 
@@ -68,8 +75,8 @@ function SignInForm() {
   };
   console.log(localStorage)
   if(auth.authenticate){
-    console.log(auth.authenticate)
-    return <Navigate to={"/welcome"} />;
+    console.log(user.chart)
+    return <Navigate to={"/chart"} />;
   }
 
   return (
@@ -160,6 +167,9 @@ function SignInForm() {
                 className="formFieldButton"
                 onClick={(e) => {
                   userLogin(e);
+                  setTimeout(() => {
+                    window.location.reload()
+                  }, 1000);
                 }}
               >
                 Sign In
