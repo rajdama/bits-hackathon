@@ -19,6 +19,7 @@ function App() {
       <Router>
       <Routes>
       <Route path = "/goal" element = {<SignupWeightGoal />} />
+      <Route path = "/calendar" element = {<Calendar />} />
       <Route path = "/welcome" element = {<SignupWelcome />} />
       <Route path = "/signin" element = {<SignInForm />} />
       <Route path = "/signup" element = {<SignUpForm />} />

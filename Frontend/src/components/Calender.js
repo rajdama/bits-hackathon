@@ -11,6 +11,7 @@ const Calendar = () => {
   const [value, setValue] = useState(new Date());
   const [highlightedDays, setHighlightedDays] = useState([1, 2, 13]);
   const [dayprog, setdayprog] = useState([false, false, false, false]);
+
   return (
     <div ClassName = "cont">
     <h1>TrackYourFitness</h1>
@@ -23,7 +24,7 @@ const Calendar = () => {
         disableFuture
         onChange={(newValue) => {
           setValue(newValue);
-          console.log(newValue.getDate());
+          console.log(newValue.toLocaleDateString());
         }}
         renderInput={(params) => {
           <TextField {...params} />;

@@ -35,6 +35,7 @@ export const foodList = (target) => {
             type: user_constants.FOOD_LIST_REQUEST
         })
         const res = await axios.get(`/${target}`);
+        console.log(res)
         if(res.status === 200){
             const  foodlist  = res.data;
             console.log(foodlist)
@@ -61,11 +62,11 @@ export const occupiedCells = (occupiedCells) => {
     }
 }
 
-export const makeChart = (chartData) => {
+export const makeChart = (chartData, userId) => {
     console.log(chartData)
     return async (dispatch) => {
         console.log(chartData)
-        const res = await axios.post('/makeChart', {chartData})
+        const res = await axios.post('/makeChart', {chartData, userId});
         dispatch({
             type: user_constants.MAKE_CHART_REQUEST,
         })
@@ -80,6 +81,30 @@ export const makeChart = (chartData) => {
         }else{
             dispatch({
                 type: user_constants.MAKE_CHART_FAILURE,
+                payload: { error: res.data.error }
+            });
+        }
+    }
+}
+
+export const getChart = (userId) => {
+    console.log(userId)
+    return async dispatch => {
+        dispatch({
+            type: user_constants.GET_CHART_REQUEST
+        })
+        const res = await axios.post(`/getChart`, {userId});
+        console.log(res)
+        if(res.status === 200){
+            const  chart  = res.data;
+            console.log(chart)
+            dispatch({
+                type: user_constants.GET_CHART_SUCCESS,
+                payload: {message:chart}
+            });
+        }else{
+            dispatch({
+                type: user_constants.GET_CHART_FAILURE,
                 payload: { error: res.data.error }
             });
         }

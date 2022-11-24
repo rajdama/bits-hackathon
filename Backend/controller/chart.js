@@ -19,29 +19,30 @@ exports.displayfooditems = async (req, res) => {
 
 exports.makechart = async (req, res) => {
 
-  const chartData = req.body.chartData;
+  const {chartData, userId} = req.body;
+  console.log(chartData, userId)
   // console.log(chartData);
 
   const period = (cell, diet, chartData,i,j)=>{
     if(cell.charAt(0)=="0"){
       const period = "Breakfast";
       const food = chartData[i].food;
-      diet[j].push({period, food})
+      diet[j].push({period, food, cell})
     }
     if(cell.charAt(0)=="1"){
       const period = "Lunch";
       const food = chartData[i].food;
-      diet[j].push({period, food})
+      diet[j].push({period, food, cell})
     }
     if(cell.charAt(0)=="2"){
       const period = "Snacks";
       const food = chartData[i].food;
-      diet[j].push({period, food})
+      diet[j].push({period, food, cell})
     }
     if(cell.charAt(0)=="3"){
       const period = "Dinner";
       const food = chartData[i].food;
-      diet[j].push({period, food})
+      diet[j].push({period, food, cell})
     }
   }
 
@@ -77,26 +78,14 @@ exports.makechart = async (req, res) => {
     if(cell.charAt(1)=="6"){
       period(cell, diet, chartData,i,6)
     }
-
-    // const _chart = new Chart({
-    //   day,
-    //   dayChecks,
-    // });
-  
-    // _check.save((error, data) => {
-    //   if (error) {
-    //     console.log(error);
-    //     return res.status(400).json({ message: error });
-    //   }
-    
   }
-  console.log(diet)
+
   for (let i = 0; i < diet.length; i++) {
-    
     const day = i==0?String("Monday"):i==1?String("Tuesday"):i==2?String("Wednesday"):i==3?String("Thursday"):i==4?String("Friday"):i==5?String("Saturday"):String("Sunday")
     const _chart = new Chart({
       day,
-      diet: diet[i]
+      diet: diet[i],
+      userId
     });
     _chart.save((error, data) => {
       if (error) {
@@ -104,20 +93,15 @@ exports.makechart = async (req, res) => {
         return res.status(400).json({ message: error });
       }
     });
-
   }
-
-  // const _chart = new Chart(chartData,i,j);
-  // _chart.save((error, chart) => {
-  //   if (error) {
-  //     return res.status(400).json({
-  //       message: "Something went wrong",
-  //     });
-  //   }
-  //   if (chart) {
-  //     return res.status(201).json({
-  //       chart,
-  //     });
-  //   }
-  // });
 };
+
+exports.getchart = async (req, res) => {
+  const {userId} = req.body;
+  const chart = await Chart.find({userId});
+  // chart.map((item)=>{
+
+  // })
+  // console.log(chart.length)
+  res.send(chart);
+}

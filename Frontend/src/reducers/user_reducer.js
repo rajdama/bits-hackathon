@@ -70,6 +70,26 @@ export default (state = initState, action) => {
                 error: action.payload.error
             }
             break;
+        case user_constants.GET_CHART_REQUEST:
+            state = {
+                ...state,
+                loading: true
+            }
+            break;
+        case user_constants.GET_CHART_SUCCESS:
+            state = {
+                ...state,
+                loading: false,
+                message: action.payload.message
+            }
+            break;
+        case user_constants.GET_CHART_FAILURE:
+            state = {
+                ...state,
+                loading: false,
+                error: action.payload.error
+            }
+            break;
         case "OCCUPIED_CELLS":
             console.log(action.payload.occupiedCells.food)
             state.occupiedCells = state.occupiedCells.length!=0 ? state.occupiedCells.filter((item) => item.cell !== action.payload.occupiedCells.cell) : state.occupiedCells
