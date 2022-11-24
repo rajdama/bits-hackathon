@@ -60,6 +60,7 @@ function SignUpForm() {
     e.preventDefault()
     const user = { firstName:firstname, lastName:lastname, email, userName:username,password };
     dispatch(signup(user));
+    window.location.reload();
   };
 
   useEffect(() => {

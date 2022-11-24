@@ -4,7 +4,7 @@ import { useSelector,useDispatch } from "react-redux";
 import "bootstrap/dist/css/bootstrap.css";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import {foodList, occupiedCells} from "../actions/user_actions"
+import {occupiedCells} from "../actions/user_actions"
 import {makeChart} from "../actions/user_actions"
 import {getChart} from "../actions/user_actions"
 import { Navigate } from 'react-router-dom'
@@ -27,8 +27,6 @@ export default function Chart() {
   const auth = useSelector((state) => state.auth);
   useEffect(() => {
     dispatch(getChart(auth.user._id));
-    // dispatch(foodList("gain"));
-
   }, [])
   let chart = []
   let foodlist
@@ -44,24 +42,7 @@ export default function Chart() {
         })
     }
     }
-
-  useEffect(() => {
-  if(user.reload){
-    // window.location.reload()
-  }
-  }, [])
-  
-
-  
-  
-  // if(user.message.length !=0){
-  //   user.message.map((item) => {
-  //     return (item.diet.map((diet)=>{
-  //            chart.push(diet)
-  //      }))
-  //    })
-  //     foodList = user.message;
-  // }
+    
   const generatetable = () => {
     let ele = [];
     for (let i = 0; i < 4; i++) {
@@ -309,11 +290,15 @@ export default function Chart() {
         <p>Saturday</p>
         <p>Sunday</p>
       </div>
+
       <div className="container mb-5">{elements}</div>
-      <button onClick={()=>{
+      {
+        !user.chart &&  <button onClick={()=>{
         
-        dispatch(makeChart(user.occupiedCells,auth.user._id))
-        }} className="start my-5">Make Chart</button>
+          dispatch(makeChart(user.occupiedCells,auth.user._id))
+          }} className="start my-5">Make Chart</button>
+      }
+
     </div>
   );
 }
