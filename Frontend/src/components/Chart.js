@@ -42,7 +42,7 @@ export default function Chart() {
         })
     }
     }
-    
+
   const generatetable = () => {
     let ele = [];
     for (let i = 0; i < 4; i++) {
@@ -293,7 +293,7 @@ export default function Chart() {
 
       <div className="container mb-5">{elements}</div>
       {
-        !user.chart &&  <button onClick={()=>{
+        user.chart.length==0 &&  <button onClick={()=>{
         
           dispatch(makeChart(user.occupiedCells,auth.user._id))
           }} className="start my-5">Make Chart</button>
