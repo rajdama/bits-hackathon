@@ -307,6 +307,8 @@ export default function Chart() {
             </DropdownButton> */}
           </form>
           { selectedFood.title &&
+      
+            <>
             <div
               className="my-5"
               style={{
@@ -317,7 +319,7 @@ export default function Chart() {
               }}
             >
               <div className="searchresult">
-                <img src={selectedFood.image} alt="img"></img>
+                <img style={{height:"19vh",width:"18vh"}} src={selectedFood.image} alt="img"></img>
                 <div className="detailsfood">
                   <p>{selectedFood.title}</p>
                   <p>carlories : {Math.round(selectedFood.calories)}</p>
@@ -336,6 +338,8 @@ export default function Chart() {
                 Save
               </button>
             </div>
+            <div style={{color:'red'}}>Danger calorie limit exceeded</div>
+            </>
           }
         </div>
       </div>
