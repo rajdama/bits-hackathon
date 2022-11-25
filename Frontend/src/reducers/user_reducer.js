@@ -92,6 +92,26 @@ export default (state = initState, action) => {
                 error: action.payload.error
             }
             break;
+        case user_constants.SAVE_CHECKBOX_REQUEST:
+            state = {
+                ...state,
+                loading: true
+            }
+            break;
+        case user_constants.SAVE_CHECKBOX_SUCCESS:
+            state = {
+                ...state,
+                loading: false,
+                progress: action.payload.message
+            }
+            break;
+        case user_constants.SAVE_CHECKBOX_FAILURE:
+            state = {
+                ...state,
+                loading: false,
+                error: action.payload.error
+            }
+            break;
         case "TARGET":
             state = {
                 ...state,

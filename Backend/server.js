@@ -23,9 +23,11 @@ mongoose
 const userRoutes = require("./routes/user");
 const homeRoutes = require("./routes/home");
 const chartRoutes = require("./routes/chart")
+const calendarRoutes = require("./routes/calendar")
 app.use("/api", userRoutes);
 app.use("/api", homeRoutes);
 app.use("/api", chartRoutes);
+app.use("/api", calendarRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log("Server is running on port 1000");

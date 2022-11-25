@@ -119,3 +119,27 @@ export const usertarget = (target) => {
         })
     }
 }
+export const saveCheckbox = (checkbox, userId) => {
+    console.log(checkbox,userId)
+    return async (dispatch) => {
+        console.log(checkbox)
+        const res = await axios.post('/saveCheckbox', {checkbox, userId});
+        dispatch({
+            type: user_constants.SAVE_CHECKBOX_REQUEST,
+        })
+        console.log(res)
+        if(res.status === 200){
+            const  checkbox  = res.data;
+            console.log(checkbox)
+            dispatch({
+                type: user_constants.SAVE_CHECKBOX_SUCCESS,
+                payload: {message:checkbox}
+            });
+        }else{
+            dispatch({
+                type: user_constants.SAVE_CHECKBOX_FAILURE,
+                payload: { error: res.data.error }
+            });
+        }
+    }
+}

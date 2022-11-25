@@ -14,7 +14,7 @@ export default function Chart() {
   const [selectedCell, setSelectedCell] = useState("");
   const [selectedFood, setSelectedFood] = useState({});
   const dispatch = useDispatch();
-  
+
   const handleOnSearch = (string, results) => {
     // onSearch will have as the first callback parameter
     // the string searched and for the second the results.
@@ -34,6 +34,24 @@ export default function Chart() {
   };
 
   const handleOnSelect = (item) => {
+    if (user.target == "gain") {
+      if (item.calories < 600) {
+        item = { ...item, warning: "Calories are too low" };
+      }
+    }
+    if (user.target == "lose") {
+      if (item.calories > 600) {
+        item = { ...item, warning: "Calories are too high" };
+      }
+    }
+    if (user.target == "maintain") {
+      if (item.calories < 600 || item.calories > 700) {
+        item = {
+          ...item,
+          warning: "Calories are not in the range for maintaining weight",
+        };
+      }
+    }
     item = { ...item, title: item.name, calories: Math.round(item.calories) };
     setSelectedFood(item);
     // the item selected
@@ -41,8 +59,6 @@ export default function Chart() {
       console.log(selectedFood);
     }, 1000);
   };
-
-  const handleOnFocus = () => {};
 
   const openSearch = () => {
     document.getElementById("myOverlay").style.display = "block";
@@ -52,9 +68,10 @@ export default function Chart() {
   };
   const user = useSelector((state) => state.user);
   const auth = useSelector((state) => state.auth);
-  let items
-  if(user.message){
-     items = user.message.hits.map((item, i) => {
+  let items;
+
+  if (user.message) {
+    items = user.message.hits.map((item, i) => {
       return {
         id: i,
         name: item.recipe.label,
@@ -257,7 +274,7 @@ export default function Chart() {
     setelements(ele);
   };
   useEffect(() => {
-    if (user.chart.length == 0) {
+    if (user.chart.length == 0 || user.message.length != 0) {
       generatetable();
     } else {
       generateFoodList();
@@ -281,7 +298,6 @@ export default function Chart() {
               onSearch={handleOnSearch}
               onHover={handleOnHover}
               onSelect={handleOnSelect}
-              onFocus={handleOnFocus}
               onClear={handleOnClear}
               autoFocus
               // formatResult={formatResult}
@@ -306,41 +322,50 @@ export default function Chart() {
                 }):""}
             </DropdownButton> */}
           </form>
-          { selectedFood.title &&
-      
+          {selectedFood.title && (
             <>
-            <div
-              className="my-5"
-              style={{
-                display: "flex",
-                marginRight: "30px",
-                marginLeft: "30px",
-                width: "80%",
-              }}
-            >
-              <div className="searchresult">
-                <img style={{height:"19vh",width:"18vh"}} src={selectedFood.image} alt="img"></img>
-                <div className="detailsfood">
-                  <p>{selectedFood.title}</p>
-                  <p>carlories : {Math.round(selectedFood.calories)}</p>
-                </div>
-              </div>
-              <button
+              <div
                 className="my-5"
-                onClick={() => {
-                  dispatch(
-                    occupiedCells({ cell: selectedCell, food: selectedFood })
-                  );
-                  window.location.reload();
+                style={{
+                  display: "flex",
+                  marginRight: "30px",
+                  marginLeft: "30px",
+                  width: "80%",
                 }}
-                style={{ height: "50px", borderRadius: "15px" }}
               >
-                Save
-              </button>
-            </div>
-            <div style={{color:'red'}}>Danger calorie limit exceeded</div>
+                <div className="searchresult">
+                  <img
+                    style={{ height: "19vh", width: "18vh" }}
+                    src={selectedFood.image}
+                    alt="img"
+                  ></img>
+                  <div className="detailsfood">
+                    <p>{selectedFood.title}</p>
+                    <p>carlories : {Math.round(selectedFood.calories)}</p>
+                  </div>
+                </div>
+                {selectedFood.warning ? (
+                  <div style={{ color: "red" }}>{selectedFood.warning}</div>
+                ) : (
+                  <button
+                    className="my-5"
+                    onClick={() => {
+                      dispatch(
+                        occupiedCells({
+                          cell: selectedCell,
+                          food: selectedFood,
+                        })
+                      );
+                      window.location.reload();
+                    }}
+                    style={{ height: "50px", borderRadius: "15px" }}
+                  >
+                    Save
+                  </button>
+                )}
+              </div>
             </>
-          }
+          )}
         </div>
       </div>
       <div className="Header">Make your own chart</div>

@@ -7,15 +7,17 @@ import Badge from "@mui/material/Badge";
 import { PickersDay } from "@mui/x-date-pickers/PickersDay";
 import CheckIcon from "@mui/icons-material/Check";
 import "./Calender.css";
-import { useSelector } from 'react-redux';
-import { getChart } from "../actions/user_actions";
+import { useDispatch, useSelector } from 'react-redux';
+import { saveCheckbox } from "../actions/user_actions";
+
 const Calendar = () => {
   const [value, setValue] = useState(new Date());
-  const [highlightedDays, setHighlightedDays] = useState([1, 2, 13]);
+  const [highlightedDays, setHighlightedDays] = useState([1, 2, 13,]);
   const [dayprog, setdayprog] = useState([false,false, false, false]);
   const user = useSelector((state) => state.auth);
   const opt = useSelector((state) => state.user.chart);
-
+  const dispatch = useDispatch();
+  console.log(user)
 
   const diet = {
     "Monday":{
@@ -364,7 +366,8 @@ const Calendar = () => {
              let a = [...highlightedDays, value.getDate()];
             setHighlightedDays(a);
           }
-          console.log(diet[d[value.getDay()]]["breakfast"]["img"]);
+          dispatch(saveCheckbox(dayprog,user.user._id))
+          console.log(dayprog);
         }}
         style = {{
           marginTop:40,

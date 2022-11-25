@@ -13,5 +13,4 @@ const dietChartSchema = new mongoose.Schema({
 },{timestamps : true})
 
 
-
 module.exports = mongoose.model('Chart', dietChartSchema)
