@@ -3,18 +3,19 @@ const axios = require("axios");
 
 exports.displayfooditems = async (req, res) => {
 
-  let foodItems
-
-  if(req.params.target == "gain"){
-    foodItems = await axios.get(`https://api.spoonacular.com/recipes/findByNutrients?apiKey=${process.env.API_KEY}&minCalories=1000&diet=vegetarian`)
+  // if(req.params.target == "gain"){
+  //   foodItems = await axios.get(`https://api.spoonacular.com/recipes/findByNutrients?apiKey=${process.env.API_KEY}&minCalories=1000&diet=vegetarian`)
+  // }
+  // if(req.params.target == "lose"){
+  //   foodItems = await axios.get(`https://api.spoonacular.com/recipes/findByNutrients?apiKey=${process.env.API_KEY}&minCalories=500`)
+  // }
+  // if(req.params.target == "maintain"){
+  //   foodItems = await axios.get(`https://api.spoonacular.com/recipes/findByNutrients?apiKey=${process.env.API_KEY}&minCalories=800`)
+  // }
+  const result = await axios.get(`https://api.edamam.com/search?q=${req.params.foodTitle}&app_id=${process.env.APP_ID}&app_key=${process.env.APP_KEY}`)
+  if(result.status==200){
+    res.status(200).json(result.data)
   }
-  if(req.params.target == "lose"){
-    foodItems = await axios.get(`https://api.spoonacular.com/recipes/findByNutrients?apiKey=${process.env.API_KEY}&minCalories=500`)
-  }
-  if(req.params.target == "maintain"){
-    foodItems = await axios.get(`https://api.spoonacular.com/recipes/findByNutrients?apiKey=${process.env.API_KEY}&minCalories=800`)
-  }
-  res.status(200).json(foodItems.data)
 };
 
 exports.makechart = async (req, res) => {

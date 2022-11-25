@@ -5,13 +5,13 @@ import "./SignupStyles.css";
 import { useNavigate } from "react-router-dom";
 import { ChakraProvider } from '@chakra-ui/react'
 import { useDispatch } from "react-redux";
-import { foodList } from "../actions/user_actions";
+import { usertarget } from "../actions/user_actions";
 
 const SignupWeightGoal = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const userTarget = (target) => {
-		dispatch(foodList(target));
+		dispatch(usertarget(target));
 	  };
 	return (
         <div>

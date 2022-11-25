@@ -28,13 +28,13 @@ export const signup = (user) => {
     }
 }
 
-export const foodList = (target) => {
-    console.log(11111111)
+export const foodList = (foodTitle) => {
+    console.log("searching....")
     return async dispatch => {
         dispatch({
             type: user_constants.FOOD_LIST_REQUEST
         })
-        const res = await axios.get(`/${target}`);
+        const res = await axios.get(`/display/${foodTitle}`);
         console.log(res)
         if(res.status === 200){
             const  foodlist  = res.data;
@@ -111,11 +111,11 @@ export const getChart = (userId) => {
     }
 }
 
-export const reload = (reload) => {
+export const usertarget = (target) => {
     return async dispatch => {
         dispatch({
-            type: "RELOAD",
-            payload: {reload}
+            type: "TARGET",
+            payload: {target}
         })
     }
 }

@@ -1,21 +1,50 @@
 import "./Chart.css";
 import React, { useEffect, useState } from "react";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import "bootstrap/dist/css/bootstrap.css";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import {occupiedCells} from "../actions/user_actions"
-import {makeChart} from "../actions/user_actions"
-import {getChart} from "../actions/user_actions"
-import { Navigate } from 'react-router-dom'
+import { occupiedCells } from "../actions/user_actions";
+import { makeChart } from "../actions/user_actions";
+import { getChart } from "../actions/user_actions";
+import { foodList } from "../actions/user_actions";
+import { Navigate } from "react-router-dom";
+import { ReactSearchAutocomplete } from "react-search-autocomplete";
 
 export default function Chart() {
-
   const [elements, setelements] = useState([]);
   const [selectedCell, setSelectedCell] = useState("");
   const [selectedFood, setSelectedFood] = useState({});
   const dispatch = useDispatch();
+  
+  const handleOnSearch = (string, results) => {
+    // onSearch will have as the first callback parameter
+    // the string searched and for the second the results.
+    if (string != "") {
+      dispatch(foodList(string));
+    }
+    // setFoodTitle(string)
+  };
 
+  const handleOnHover = (result) => {
+    // the item hovered
+    console.log(result);
+  };
+
+  const handleOnClear = () => {
+    setSelectedFood({});
+  };
+
+  const handleOnSelect = (item) => {
+    item = { ...item, title: item.name, calories: Math.round(item.calories) };
+    setSelectedFood(item);
+    // the item selected
+    setTimeout(() => {
+      console.log(selectedFood);
+    }, 1000);
+  };
+
+  const handleOnFocus = () => {};
 
   const openSearch = () => {
     document.getElementById("myOverlay").style.display = "block";
@@ -25,55 +54,68 @@ export default function Chart() {
   };
   const user = useSelector((state) => state.user);
   const auth = useSelector((state) => state.auth);
+  let items
+  if(user.message){
+     items = user.message.hits.map((item, i) => {
+      return {
+        id: i,
+        name: item.recipe.label,
+        image: item.recipe.image,
+        calories: item.recipe.calories,
+      };
+    });
+  }
+
   useEffect(() => {
     dispatch(getChart(auth.user._id));
-  }, [])
-  let chart = []
-  let foodlist
+  }, []);
+  let chart = [];
+  let foodlist;
   if (user.message) {
     foodlist = user.message;
   }
-  if(user.chart){
-    if(user.chart.length !=0){
+  if (user.chart) {
+    if (user.chart.length != 0) {
       user.chart.map((item) => {
-        return (item.diet.map((diet)=>{
-               chart.push(diet)
-         }))
-        })
+        return item.diet.map((diet) => {
+          chart.push(diet);
+        });
+      });
     }
-    }
+  }
 
   const generatetable = () => {
     let ele = [];
     for (let i = 0; i < 4; i++) {
       for (let j = 0; j < 7; j++) {
-        let occupiedCellsInfo = []
-       occupiedCellsInfo = user.occupiedCells.length!=0 ? user.occupiedCells.filter((item) => {return item.cell == `${i}${j}`}) : occupiedCellsInfo
-       if(occupiedCellsInfo.length != 0){
-
-          let image = React.createElement(
-            "img",
-            {
-              src: `${occupiedCellsInfo[0].food.image}`,
-              style: {
-                width:"90px",
-                height:"90px",
-                marginTop:"5px",
-                borderRadius:"50%",
-                margin:"auto"
-              }
-            }
-          )
+        let occupiedCellsInfo = [];
+        occupiedCellsInfo =
+          user.occupiedCells.length != 0
+            ? user.occupiedCells.filter((item) => {
+                return item.cell == `${i}${j}`;
+              })
+            : occupiedCellsInfo;
+        if (occupiedCellsInfo.length != 0) {
+          let image = React.createElement("img", {
+            src: `${occupiedCellsInfo[0].food.image}`,
+            style: {
+              width: "90px",
+              height: "90px",
+              marginTop: "5px",
+              borderRadius: "30%",
+              margin: "auto",
+            },
+          });
 
           let calorie = React.createElement(
             "p",
             {
-            style: {
-              fontSize: "12px",
-            }
+              style: {
+                fontSize: "12px",
+              },
             },
             `calories: ${occupiedCellsInfo[0].food.calories}`
-          )
+          );
 
           let title = React.createElement(
             "p",
@@ -82,12 +124,12 @@ export default function Chart() {
                 fontSize: "12px",
                 display: "flex",
                 flexDirection: "column",
-              }
+              },
             },
             occupiedCellsInfo[0].food.title,
             calorie
-          )
-  
+          );
+
           let cell = React.createElement(
             "div",
             {
@@ -105,11 +147,9 @@ export default function Chart() {
             },
             image,
             title
-            
           );
           ele.push(cell);
-        }
-        else{
+        } else {
           let addbtn = React.createElement(
             "button",
             {
@@ -124,7 +164,7 @@ export default function Chart() {
                 fontSize: 20,
               },
               onClick: () => {
-                setSelectedCell(`${i}${j}`);             
+                setSelectedCell(`${i}${j}`);
                 openSearch();
               },
             },
@@ -146,7 +186,6 @@ export default function Chart() {
               },
             },
             addbtn
-            
           );
           ele.push(cell);
         }
@@ -156,33 +195,32 @@ export default function Chart() {
     console.log(elements);
   };
   const generateFoodList = () => {
-    let ele = []
-    for(let i=0; i<4; i++){
-      for(let j=0; j<7; j++){
-        const currentItem = chart.filter((item) => {return item.cell == `${i}${j}`})
-        let image = React.createElement(
-          "img",
-          {
-            src: `${currentItem[0].food.image}`,
-            style: {
-              width:"90px",
-              height:"90px",
-              marginTop:"5px",
-              borderRadius:"50%",
-              margin:"auto"
-            }
-          }
-        )
+    let ele = [];
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 7; j++) {
+        const currentItem = chart.filter((item) => {
+          return item.cell == `${i}${j}`;
+        });
+        let image = React.createElement("img", {
+          src: `${currentItem[0].food.image}`,
+          style: {
+            width: "90px",
+            height: "90px",
+            marginTop: "5px",
+            borderRadius: "50%",
+            margin: "auto",
+          },
+        });
 
         let calorie = React.createElement(
           "p",
           {
-          style: {
-            fontSize: "12px",
-          }
+            style: {
+              fontSize: "12px",
+            },
           },
           `calories: ${currentItem[0].food.calories}`
-        )
+        );
 
         let title = React.createElement(
           "p",
@@ -191,11 +229,11 @@ export default function Chart() {
               fontSize: "12px",
               display: "flex",
               flexDirection: "column",
-            }
+            },
           },
           currentItem[0].food.title,
           calorie
-        )
+        );
 
         let cell = React.createElement(
           "div",
@@ -214,24 +252,22 @@ export default function Chart() {
           },
           image,
           title
-          
         );
         ele.push(cell);
       }
     }
     setelements(ele);
-  }
+  };
   useEffect(() => {
-    if(user.chart.length ==0){
-        generatetable();
-      }
-      else{
-        generateFoodList();
-      }
+    if (user.chart.length == 0) {
+      generatetable();
+    } else {
+      generateFoodList();
+    }
   }, []);
 
-  if(user.chart.length ==0 && user.message.length ==0){
-    return <Navigate to={"/goal"} />
+  if (user.chart.length == 0 && !user.target) {
+    return <Navigate to={"/goal"} />;
   }
 
   return (
@@ -242,7 +278,17 @@ export default function Chart() {
         </span>
         <div className="overlay-content">
           <form>
-            <DropdownButton
+            <ReactSearchAutocomplete
+              items={items}
+              onSearch={handleOnSearch}
+              onHover={handleOnHover}
+              onSelect={handleOnSelect}
+              onFocus={handleOnFocus}
+              onClear={handleOnClear}
+              autoFocus
+              // formatResult={formatResult}
+            />
+            {/* <DropdownButton
               variant={"primary"}
               id="dropdown-basic-button"
               title="Select Food"
@@ -260,23 +306,38 @@ export default function Chart() {
                     </Dropdown.Item>
                   );
                 }):""}
-            </DropdownButton>
+            </DropdownButton> */}
           </form>
-          {
-            selectedFood.title &&
-            <>
-          <div className="searchresult">
-            <img src={selectedFood.image} alt="img"></img>
-            <div className="detailsfood">
-              <p>{selectedFood.title}</p>
-              <p>carlories : {selectedFood.calories}</p>
+          { selectedFood.title &&
+            <div
+              className="my-5"
+              style={{
+                display: "flex",
+                marginRight: "30px",
+                marginLeft: "30px",
+                width: "80%",
+              }}
+            >
+              <div className="searchresult">
+                <img src={selectedFood.image} alt="img"></img>
+                <div className="detailsfood">
+                  <p>{selectedFood.title}</p>
+                  <p>carlories : {Math.round(selectedFood.calories)}</p>
+                </div>
+              </div>
+              <button
+                className="my-5"
+                onClick={() => {
+                  dispatch(
+                    occupiedCells({ cell: selectedCell, food: selectedFood })
+                  );
+                  window.location.reload();
+                }}
+                style={{ height: "50px", borderRadius: "15px" }}
+              >
+                Save
+              </button>
             </div>
-          </div>
-          <button onClick={()=>{
-            dispatch(occupiedCells({cell:selectedCell,food:selectedFood}))
-            window.location.reload();
-          }} style={{marginLeft:"500px",marginTop:"10px"}}>Save</button>
-            </>
           }
         </div>
       </div>
@@ -292,13 +353,16 @@ export default function Chart() {
       </div>
 
       <div className="container mb-5">{elements}</div>
-      {
-        user.chart.length==0 &&  <button onClick={()=>{
-        
-          dispatch(makeChart(user.occupiedCells,auth.user._id))
-          }} className="start my-5">Make Chart</button>
-      }
-
+      {user.chart.length == 0 && (
+        <button
+          onClick={() => {
+            dispatch(makeChart(user.occupiedCells, auth.user._id));
+          }}
+          className="start my-5"
+        >
+          Make Chart
+        </button>
+      )}
     </div>
   );
 }

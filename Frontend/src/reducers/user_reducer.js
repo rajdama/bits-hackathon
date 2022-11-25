@@ -92,10 +92,10 @@ export default (state = initState, action) => {
                 error: action.payload.error
             }
             break;
-        case "RELOAD":
+        case "TARGET":
             state = {
                 ...state,
-                reload: action.payload
+                target: action.payload.target
             }
             break;
         case "OCCUPIED_CELLS":
