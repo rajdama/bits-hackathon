@@ -99,7 +99,7 @@ function SignUpForm() {
 
         <div className="formTitle">
           <NavLink
-            to="/"
+            to="/signin"
             activeClassName="formTitleLink-active"
             className="formTitleLink"
           >
@@ -108,7 +108,7 @@ function SignUpForm() {
           or{" "}
           <NavLink
             exact
-            to="/sign-in"
+            to="/signup"
             activeClassName="formTitleLink-active"
             className="formTitleLink"
           >

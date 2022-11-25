@@ -2,8 +2,6 @@ import "./Chart.css";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "bootstrap/dist/css/bootstrap.css";
-import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
 import { occupiedCells } from "../actions/user_actions";
 import { makeChart } from "../actions/user_actions";
 import { getChart } from "../actions/user_actions";

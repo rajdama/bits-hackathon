@@ -33,10 +33,40 @@
     margin-top: 10vh;
     color:black;
   }
-  h1{
-    color:black !important;
-  }
   .MuiSvgIcon-root, .MuiSvgIcon-colorRed, .MuiSvgIcon-fontSizeMedium, .css-i4bv87-MuiSvgIcon-root{
     color:green;
     font-size:20px;
+  }
+
+  img{
+    height: 100px;
+    width: 100px;
+    border-radius: 6px;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+Chettan+2&family=Calligraffitti&display=swap');
+  .title{
+    font-family: 'Calligraffitti', cursive;
+    font-weight: 700;
+    font-size: 6rem;
+    text-shadow: -15px 5px 20px #ced0d3;
+    letter-spacing: 0.02em;
+    text-align: center;
+    color: #F9f1cc;
+    text-shadow: 5px 5px 0px #FFB650, 
+    10px 10px 0px #FFD662, 
+    15px 15px 0px  #FF80BF, 
+    20px 20px 0px #EF5097, 
+    25px 25px 0px #6868AC, 
+    30px 30px 0px #90B1E0;
+  }
+  .meal-chart{
+    width:80vw;
+    margin-left:10vw;
+  }
+  .block{
+    width:25%;
+  }
+  .change-color{
+    border:solid 1px lightgreen !important;
+    color:lightgreen !important;
   }
