@@ -55,12 +55,17 @@ function SignUpForm() {
       })
       .catch((err) => console.error(err));
   };
+  let navigateflag = false
 
   const userSignUp = (e) => {
     e.preventDefault()
     const user = { firstName:firstname, lastName:lastname, email, userName:username,password };
     dispatch(signup(user));
-    window.location.reload();
+    navigateflag = true
+    setTimeout(() => {
+      
+      window.location.reload();
+    }, 1000);
   };
 
   useEffect(() => {

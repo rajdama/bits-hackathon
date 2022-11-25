@@ -70,7 +70,7 @@ export default function Chart() {
   const auth = useSelector((state) => state.auth);
   let items;
 
-  if (user.message) {
+  if (user.message && (typeof user.message != "string")) {
     items = user.message.hits.map((item, i) => {
       return {
         id: i,
